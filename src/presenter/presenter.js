@@ -1,6 +1,5 @@
 import FilterView from '../view/filter-view.js';
 import SortView from '../view/sort-view.js';
-
 import { render, replace } from '../framework/render.js';
 
 export default class Presenter {
