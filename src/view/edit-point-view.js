@@ -1,5 +1,4 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import {getFullDate} from '../utils/point.js';
 import { EVENT_TYPES, CITIES } from '../const.js';
 
 const createEditPointTemplate = (data) => {
@@ -89,9 +88,6 @@ const createEditPointTemplate = (data) => {
 export default class extends AbstractView {
   #point = null;
 
-  constructor({point, onRollButtonClick, onSubmitClick}) {
-    super();
-    this.#point = point;
 
     this.element.querySelector('.event__rollup-btn').addEventListener('click', (event) => {
       event.preventDefault();
@@ -103,4 +99,4 @@ export default class extends AbstractView {
   get template() {
     return createEditPointTemplate(this.#point);
   }
-}
+
