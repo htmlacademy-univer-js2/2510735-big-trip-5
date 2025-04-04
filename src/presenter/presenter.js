@@ -1,29 +1,76 @@
 import FilterView from '../view/filter-view.js';
 import SortView from '../view/sort-view.js';
-import AddNewPointView from '../view/add-new-point-view.js';
 import EditPointView from '../view/edit-point-view.js';
 import PointListView from '../view/point-list-view.js';
 import PointView from '../view/point-view.js';
-import {render} from '../render.js';
+import EmptyPointsListMessageView from '../view/empty-points-list-message-view.js';
+import { generateFilters } from '../mock/filter.js';
+import { render, replace } from '../framework/render.js';
 
 export default class Presenter {
-  pointListComponent = new PointListView();
+  #pointsListComponent = new PointListView();
+  #filtersContainer = null;
+  #tripEventsContainer = null;
+  #pointsModel = null;
+  #points = null;
+  #filters = null;
 
-  constructor(filtersContainer, tripEventsContainer) {
-    this.filtersContainer = filtersContainer;
-    this.tripEventsContainer = tripEventsContainer;
+  constructor({filtersContainer, tripEventsContainer, pointsModel}) {
+    this.#filtersContainer = filtersContainer;
+    this.#tripEventsContainer = tripEventsContainer;
+    this.#pointsModel = pointsModel;
   }
 
   init() {
-    render(new FilterView(), this.filtersContainer);
-    render(new SortView(), this.tripEventsContainer);
-    render(this.pointListComponent, this.tripEventsContainer);
-    render(new EditPointView(), this.pointListComponent.getElement());
+    this.#points = this.#pointsModel.points;
+    this.#filters = generateFilters(this.#points);
 
-    for (let i = 0; i < 3; i++) {
-      render(new PointView(), this.pointListComponent.getElement());
+    render(new FilterView({filters: this.#filters}), this.#filtersContainer);
+    render(new SortView(), this.#tripEventsContainer);
+    render(this.#pointsListComponent, this.#tripEventsContainer);
+
+    if (this.#points.length > 0) {
+      this.#points.forEach((point) => this.#renderPoint(point));
+    } else {
+      render(new EmptyPointsListMessageView(), this.#pointsListComponent.element);
+    }
+  }
+
+  #renderPoint(point) {
+    const onEscKeydown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        replaceEditFormToPoint();
+        document.removeEventListener('keydown', onEscKeydown);
+      }
+    };
+
+    const editForm = new EditPointView({point,
+      onSubmitClick: () => {
+        replaceEditFormToPoint();
+        document.removeEventListener('keydown', onEscKeydown);
+      },
+      onRollButtonClick: () => {
+        replaceEditFormToPoint();
+        document.removeEventListener('keydown', onEscKeydown);
+      }
+    });
+
+    const pointItem = new PointView({point,
+      onRollButtonClick: () => {
+        replacePointToEditForm();
+        document.addEventListener('keydown', onEscKeydown);
+      }
+    });
+
+    function replacePointToEditForm() {
+      replace(editForm, pointItem);
     }
 
-    render(new AddNewPointView(), this.pointListComponent.getElement());
+    function replaceEditFormToPoint() {
+      replace(pointItem, editForm);
+    }
+
+    render(pointItem, this.#pointsListComponent.element);
   }
 }
