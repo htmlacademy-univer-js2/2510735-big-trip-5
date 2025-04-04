@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
 
-const DEFAULT_FILTER = 'everything';
+
 
 const createFilterTemplate = (filters) => `<form class="trip-filters" action="#" method="get">
     ${filters.map((filter) =>`<div class="trip-filters__filter">
@@ -13,12 +13,3 @@ const createFilterTemplate = (filters) => `<form class="trip-filters" action="#"
 export default class FilterView extends AbstractView {
   #filters = null;
 
-  constructor({filters}) {
-    super();
-    this.#filters = filters;
-  }
-
-  get template() {
-    return createFilterTemplate(this.#filters);
-  }
-}
