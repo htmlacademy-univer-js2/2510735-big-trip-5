@@ -37,6 +37,11 @@ const getDateDifference = (date1, date2) => {
   }
 };
 
+
+
+const updatePoint = (points, updatedPoint) => points.map((point) => point.id === updatedPoint.id ? updatedPoint : point);
+
+
 const getTime = (date) => dayjs(date).format('HH:mm');
 
 const getMonthAndDate = (date) => dayjs(date).format('MMM DD');
@@ -48,6 +53,7 @@ const isPastEvent = (date) => dayjs(date).isBefore(dayjs());
 const isPresentEvent = (dateFrom, dateTo) => dayjs(dateFrom).isBefore(dayjs()) && dayjs(dateTo).isAfter(dayjs());
 
 const isFutureEvent = (date) => dayjs(date).isAfter(dayjs());
+
 
 const sortByDay = (pointA, pointB) => dayjs(pointA.startDatetime).diff(dayjs(pointB.startDatetime));
 
@@ -63,3 +69,6 @@ const getDestinationByCity = (city, destinations) => destinations.find((destinat
 
 export {getTwoRandomDates, getDateDifference, getTime, getMonthAndDate, getFullDate, isPastEvent, isPresentEvent, isFutureEvent, sortByDay, sortByTime,
   sortByPrice, getOffersByType, getOfferById, getDestinationByCity};
+=======
+export {getTwoRandomDates, getDateDifference, getTime, getMonthAndDate, getFullDate, isPastEvent, isPresentEvent, isFutureEvent, updatePoint};
+

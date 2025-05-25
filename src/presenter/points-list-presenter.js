@@ -8,6 +8,10 @@ import { render, remove, RenderPosition } from '../framework/render.js';
 import { updateItem } from '../utils/common.js';
 import { SORT_TYPES } from '../const.js';
 import { sortByDay, sortByTime, sortByPrice } from '../utils/point.js';
+=======
+import { render } from '../framework/render.js';
+import { updatePoint } from '../utils/point.js';
+
 
 export default class PointsListPresenter {
   #pointsListComponent = new PointListView();
@@ -52,9 +56,17 @@ export default class PointsListPresenter {
     this.#pointPresenters.set(point.id, pointPresenter);
   }
 
+=======
+  #pointsModel = null;
+  #points = null;
+  #filters = null;
+  #pointPresenters = new Map();
+
+
   #onModeChange = () => {
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
+
 
   #updatePointsList = (updatedPoint) => {
     this.#points = updateItem(this.#points, updatedPoint);
@@ -127,5 +139,41 @@ export default class PointsListPresenter {
 
   #renderFilters() {
     render(new FilterView({filters: this.#filters}), this.#filtersContainer);
+=======
+  #onFavoriteBtnClick = (updatedPoint) => {
+    this.#points = updatePoint(this.#points, updatedPoint);
+    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
+  };
+
+  constructor({filtersContainer, tripEventsContainer, pointsModel}) {
+    this.#filtersContainer = filtersContainer;
+    this.#tripEventsContainer = tripEventsContainer;
+    this.#pointsModel = pointsModel;
+  }
+
+  init() {
+    this.#points = this.#pointsModel.points;
+    this.#filters = generateFilters(this.#points);
+
+    render(new FilterView({filters: this.#filters}), this.#filtersContainer);
+    render(new SortView(), this.#tripEventsContainer);
+    render(this.#pointsListComponent, this.#tripEventsContainer);
+
+    if (this.#points.length > 0) {
+      this.#points.forEach((point) => this.#renderPoint(point));
+    } else {
+      render(new EmptyPointsListMessageView(), this.#pointsListComponent.element);
+    }
+  }
+
+  #renderPoint(point) {
+    const pointPresenter = new PointPresenter({
+      pointsListComponent: this.#pointsListComponent,
+      changeDataOnFavorite: this.#onFavoriteBtnClick,
+      changeMode: this.#onModeChange
+    });
+    pointPresenter.init(point);
+    this.#pointPresenters.set(point.id, pointPresenter);
+
   }
 }
