@@ -16,8 +16,9 @@ const getRandomPoint = () => {
 
   return {
     id: crypto.randomUUID(),
+
     eventType: eventType,
-=======
+
 import { getRandomOffer } from './offer.js';
 
 const MIN_PRICE = 1000;
@@ -40,7 +41,7 @@ const getRandomPoint = () => {
     price: getRandomInteger(MIN_PRICE, MAX_PRICE),
 
     offers: getRandomOffersIds(eventType),
-=======
+
     offers: Array.from({ length: getRandomInteger(OFFERS_MIN_COUNT, OFFERS_MAX_COUNT) }, getRandomOffer),
 
     isFavorite: Boolean(getRandomInteger(0, 1)),
@@ -51,6 +52,5 @@ const getRandomPoint = () => {
 const POINTS = Array.from({length: POINTS_COUNT}, getRandomPoint);
 
 export {POINTS};
-=======
 export {getRandomPoint};
 
