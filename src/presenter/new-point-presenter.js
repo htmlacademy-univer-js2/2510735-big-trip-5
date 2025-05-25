@@ -5,13 +5,13 @@ import EditFormView from '../view/edit-form-view.js';
 export default class NewPointPresenter {
   #container = null;
   #pointNewComponent = null;
-  #pointsModel = null;
+  #pointsListModel = null;
   #onDataChange = null;
   #onDestroy = null;
 
-  constructor({container, pointsModel, onDataChange, onDestroy}) {
+  constructor({container, pointsListModel, onDataChange, onDestroy}) {
     this.#container = container;
-    this.#pointsModel = pointsModel;
+    this.#pointsListModel = pointsListModel;
     this.#onDataChange = onDataChange;
     this.#onDestroy = onDestroy;
   }
@@ -22,8 +22,8 @@ export default class NewPointPresenter {
     }
 
     this.#pointNewComponent = new EditFormView({
-      destinations: this.#pointsModel.destinations,
-      offers: this.#pointsModel.offers,
+      destinations: this.#pointsListModel.destinations,
+      offers: this.#pointsListModel.offers,
       onRollButtonClick: this.#onResetClick,
       onSubmitButtonClick: this.#onSubmitButtonClick,
       onResetClick: this.#onResetClick,
@@ -39,20 +39,38 @@ export default class NewPointPresenter {
       return;
     }
 
+    this.#onDestroy({isCanceled});
+
     remove(this.#pointNewComponent);
     this.#pointNewComponent = null;
     document.removeEventListener('keydown', this.#onEscKeydown);
-
-    this.#onDestroy({isCanceled});
   };
+
+  setSaving() {
+    this.#pointNewComponent.updateElement({
+      isDisabled: true,
+      isSaving: true,
+    });
+  }
+
+  setAborting() {
+    const resetFormState = () => {
+      this.#pointNewComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#pointNewComponent.shake(resetFormState);
+  }
 
   #onSubmitButtonClick = (point) => {
     this.#onDataChange(
       ACTIONS.ADD_POINT,
       UPDATE_TYPES.MINOR,
-      point
+      point,
     );
-    this.destroy({isCanceled: false});
   };
 
   #onResetClick = () => {
