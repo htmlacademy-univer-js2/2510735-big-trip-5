@@ -49,4 +49,17 @@ const isPresentEvent = (dateFrom, dateTo) => dayjs(dateFrom).isBefore(dayjs()) &
 
 const isFutureEvent = (date) => dayjs(date).isAfter(dayjs());
 
-export {getTwoRandomDates, getDateDifference, getTime, getMonthAndDate, getFullDate, isPastEvent, isPresentEvent, isFutureEvent};
+const sortByDay = (pointA, pointB) => dayjs(pointA.startDatetime).diff(dayjs(pointB.startDatetime));
+
+const sortByTime = (pointA, pointB) => dayjs(pointB.endDatetime).diff(pointB.startDatetime) - dayjs(pointA.endDatetime).diff(pointA.startDatetime);
+
+const sortByPrice = (pointA, pointB) => pointB.price - pointA.price;
+
+const getOffersByType = (type, offers) => offers.find((offer) => offer.type === type)?.offers;
+
+const getOfferById = (id, offers) => offers.find((offer) => offer.id === id);
+
+const getDestinationByCity = (city, destinations) => destinations.find((destination) => destination.city === city);
+
+export {getTwoRandomDates, getDateDifference, getTime, getMonthAndDate, getFullDate, isPastEvent, isPresentEvent, isFutureEvent, sortByDay, sortByTime,
+  sortByPrice, getOffersByType, getOfferById, getDestinationByCity};
