@@ -25,9 +25,9 @@ new FilterPresenter({
 }).init();
 listPresenter.init();
 newPointButtonPresenter.init({onNewPointButtonClick: listPresenter.onNewPointButtonClick});
-=======
-  pointsListModel: new PointsListModel()}).init();
-=======
+
+  pointsListModel: new PointsListModel().init();
+
 import PointsModel from './model/points-model.js';
 
 const filtersContainerElement = document.querySelector('.trip-controls__filters');

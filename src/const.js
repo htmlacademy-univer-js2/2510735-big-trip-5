@@ -2,7 +2,7 @@
 const EVENT_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
 const CITIES = ['Amsterdam', 'Chamonix', 'Geneva', 'Moscow', 'New York', 'Tokyo', 'Melbourne', 'Shanghai', 'Monaco', 'Dubai', 'Maiami'];
-=======
+
 const EVENT_TYPES = ['Taxi', 'Bus', 'Train', 'Ship', 'Drive', 'Flight', 'Check-in', 'Sightseeing', 'Restaurant'];
 
 const CITIES = ['Amsterdam', 'Chamonix', 'Geneva', 'Moscow', 'New York', 'Tokyo', 'Melbourne', 'Shanghai'];
@@ -22,7 +22,7 @@ const DESCRIPTIONS = [
 ];
 
 
-=======
+
 const OFFERS = ['Upgrade to a business class', 'Order Uber', 'Add luggage', 'Switch to comfort', 'Rent a car', 'Add breakfast'];
 
 
@@ -81,10 +81,10 @@ const FORM_TYPE = {
 };
 
 export {EVENT_TYPES, CITIES, DESCRIPTIONS, FILTER_TYPES, EMPTY_LIST_MESSAGES, SORT_TYPES, MODE, ACTIONS, UPDATE_TYPES, EMPTY_POINT, FORM_TYPE};
-=======
+
 
 export {EVENT_TYPES, CITIES, DESCRIPTIONS, FILTER_TYPES, SORT_TYPES, MODE};
-=======
+
 export {EVENT_TYPES, CITIES, DESCRIPTIONS, OFFERS, FILTER_TYPES, SORT_TYPES, MODE};
 
 
