@@ -4,6 +4,8 @@ import {getDateDifference, getTime, getMonthAndDate, getOfferById, getOffersByTy
 function createOfferTemplate(offerId, offers) {
   const {title, price} = getOfferById(offerId, offers);
 
+import {getDateDifference, getTime, getMonthAndDate} from '../utils/point.js';
+
   return `<li class="event__offer">
             <span class="event__offer-title">${title}</span>
             &plus;&euro;&nbsp;
@@ -64,7 +66,10 @@ export default class PointView extends AbstractView {
   #destinations = null;
   #offers = null;
 
+
   constructor({point, destinations, offers, onRollButtonClick, onFavoriteClick}) {
+  constructor({point, onRollButtonClick, onFavoriteClick}) {
+
     super();
     this.#point = point;
     this.#destinations = destinations;

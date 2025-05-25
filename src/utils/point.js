@@ -37,6 +37,11 @@ const getDateDifference = (date1, date2) => {
   }
 };
 
+
+
+const updatePoint = (points, updatedPoint) => points.map((point) => point.id === updatedPoint.id ? updatedPoint : point);
+
+
 const getTime = (date) => dayjs(date).format('HH:mm');
 
 const getMonthAndDate = (date) => dayjs(date).format('MMM DD');
@@ -49,7 +54,10 @@ const isPresentEvent = (dateFrom, dateTo) => dayjs(dateFrom).isBefore(dayjs()) &
 
 const isFutureEvent = (date) => dayjs(date).isAfter(dayjs());
 
+
 const isSameDate = (date1, date2) => dayjs(date1).isSame(date2, 'd');
+=======
+
 
 const sortByDay = (pointA, pointB) => dayjs(pointA.startDatetime).diff(dayjs(pointB.startDatetime));
 
@@ -63,5 +71,12 @@ const getOfferById = (id, offers) => offers.find((offer) => offer.id === id);
 
 const getDestinationByCity = (city, destinations) => destinations.find((destination) => destination.city === city);
 
+
 export {getTwoRandomDates, getDateDifference, getTime, getMonthAndDate, getFullDate, isPastEvent, isPresentEvent, isFutureEvent, isSameDate, sortByDay, sortByTime,
   sortByPrice, getOffersByType, getOfferById, getDestinationByCity};
+=======
+export {getTwoRandomDates, getDateDifference, getTime, getMonthAndDate, getFullDate, isPastEvent, isPresentEvent, isFutureEvent, sortByDay, sortByTime,
+  sortByPrice, getOffersByType, getOfferById, getDestinationByCity};
+=======
+export {getTwoRandomDates, getDateDifference, getTime, getMonthAndDate, getFullDate, isPastEvent, isPresentEvent, isFutureEvent, updatePoint};
+

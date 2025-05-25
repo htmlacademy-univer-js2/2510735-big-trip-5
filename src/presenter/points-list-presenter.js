@@ -7,6 +7,12 @@ import { render, remove, RenderPosition } from '../framework/render.js';
 import { SORT_TYPES, ACTIONS, UPDATE_TYPES, FILTER_TYPES } from '../const.js';
 import { sortByDay, sortByTime, sortByPrice } from '../utils/point.js';
 import NewPointPresenter from './new-point-presenter.js';
+=======
+=======
+import { render } from '../framework/render.js';
+import { updatePoint } from '../utils/point.js';
+
+
 
 export default class PointsListPresenter {
   #pointsListComponent = new PointListView();
@@ -60,10 +66,18 @@ export default class PointsListPresenter {
     this.#pointPresenters.set(point.id, pointPresenter);
   }
 
+=======
+  #pointsModel = null;
+  #points = null;
+  #filters = null;
+  #pointPresenters = new Map();
+
+
   #onModeChange = () => {
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
     this.#newPointPresenter.destroy();
   };
+
 
   #changePointsList = (action, updateType, update) => {
     switch (action) {
@@ -77,6 +91,11 @@ export default class PointsListPresenter {
         this.#pointsListModel.addPoint(updateType, update);
         break;
     }
+=======
+
+  #updatePointsList = (updatedPoint) => {
+    this.#points = updateItem(this.#points, updatedPoint);
+    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
   };
 
   #updatePointsList = (updateType, data) => {
@@ -182,5 +201,44 @@ export default class PointsListPresenter {
   get points() {
     this.#filterType = this.#filterModel.filter;
     return filter[this.#filterType](this.#pointsListModel.points);
+=======
+  #renderFilters() {
+    render(new FilterView({filters: this.#filters}), this.#filtersContainer);
+=======
+  #onFavoriteBtnClick = (updatedPoint) => {
+    this.#points = updatePoint(this.#points, updatedPoint);
+    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
+  };
+
+  constructor({filtersContainer, tripEventsContainer, pointsModel}) {
+    this.#filtersContainer = filtersContainer;
+    this.#tripEventsContainer = tripEventsContainer;
+    this.#pointsModel = pointsModel;
+  }
+
+  init() {
+    this.#points = this.#pointsModel.points;
+    this.#filters = generateFilters(this.#points);
+
+    render(new FilterView({filters: this.#filters}), this.#filtersContainer);
+    render(new SortView(), this.#tripEventsContainer);
+    render(this.#pointsListComponent, this.#tripEventsContainer);
+
+    if (this.#points.length > 0) {
+      this.#points.forEach((point) => this.#renderPoint(point));
+    } else {
+      render(new EmptyPointsListMessageView(), this.#pointsListComponent.element);
+    }
+  }
+
+  #renderPoint(point) {
+    const pointPresenter = new PointPresenter({
+      pointsListComponent: this.#pointsListComponent,
+      changeDataOnFavorite: this.#onFavoriteBtnClick,
+      changeMode: this.#onModeChange
+    });
+    pointPresenter.init(point);
+    this.#pointPresenters.set(point.id, pointPresenter);
+
   }
 }
