@@ -14,7 +14,9 @@ const getRandomPoint = () => {
   const dates = getTwoRandomDates();
 
   return {
-    id: nanoid(),
+
+ 
+    id: crypto.randomUUID(),
     eventType: getRandomArrayElement(EVENT_TYPES),
     destination: getRandomDestination(),
     startDatetime: dates[0],
