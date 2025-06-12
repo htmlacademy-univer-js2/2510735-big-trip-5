@@ -26,7 +26,7 @@ module.exports = {
     }),
   ],
   module: {
-    rules: [
+    rules: [ // Добавляем лоадеры
       {
         test: /\.js$/,
         exclude: /(node_modules)/,
@@ -37,6 +37,10 @@ module.exports = {
           },
         },
       },
-    ]
-  }
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader']
+      },
+    ],
+  },
 };
